@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'expense'
+    'Expense'
 ]
 
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
