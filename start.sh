@@ -20,4 +20,4 @@ python manage.py migrate
 
 # Step 5: Start the Gunicorn server
 echo "Starting Gunicorn server..."
-gunicorn --workers 3 --bind 0.0.0.0:8000 ExpenseTracker.wsgi:application
+gunicorn --workers 3 --worker-class gevent ExpenseTracker.wsgi:application
