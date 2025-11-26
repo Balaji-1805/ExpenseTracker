@@ -19,7 +19,7 @@ def login(request):
         else:
             errors="Invalid username or password"
 
-    return render(request, 'expenseTracker/login.html',{'errors':errors})
+    return render(request, 'ExpenseTracker/login.html',{'errors':errors})
 
 def logout(request):
     if request.user:
