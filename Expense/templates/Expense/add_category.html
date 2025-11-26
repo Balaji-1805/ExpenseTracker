@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} Expense Tracker {% endblock %}</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* HEADER */
+      header {
+        padding-top: 30px;
+        text-align: center;
+        background-color: gray;
+      }
+
+      .header-top {
+        padding-bottom: 40px;
+        border-bottom: 2px solid white;
+      }
+
+      .header-bottom ul {
+        padding: 20px 0px;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        font-size: 1.2rem;
+        flex-wrap: wrap; /* Responsive */
+      }
+
+      .header-bottom ul a {
+        text-decoration: none;
+        color: darkgreen;
+      }
+
+      .header-bottom ul a:hover {
+        text-decoration: underline;
+        text-decoration-color: black;
+      }
+
+      main {
+        margin-top: 10px;
+        text-align: center;
+      }
+
+      /* FORM GLOBAL */
+      form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .category-field {
+        height: 30px;
+        outline: none;
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      .heading {
+        margin: 10px 0px;
+        text-align: center;
+      }
+
+      .btn {
+        height: 35px;
+        padding: 0px 5px;
+        font-size: 16px;
+        border: none;
+        background-color: black;
+        border-radius: 6px;
+        color: white;
+      }
+
+      .btn:hover {
+        cursor: pointer;
+      }
+
+      .form-container {
+        width: 90%;
+        max-width: 380px;
+        margin: 30px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .category-table {
+        margin: auto;
+      }
+
+      /* Form titles */
+      .form-container h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      /* Form fields */
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        padding: 10px;
+        border: 1px solid #aaa;
+        border-radius: 6px;
+        font-size: 15px;
+        outline: none;
+        width: 100%;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        border-color: #333;
+      }
+
+      .btn-submit {
+        padding: 10px 18px;
+        font-size: 16px;
+        background: #333;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .category-form {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+      .btn-submit:hover {
+        background: #111;
+      }
+
+      /* TABLE */
+      .expense-list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow-x: auto; /* Responsive table scroll */
+      }
+
+      table {
+        width: 100%;
+        max-width: 900px;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      td,
+      th {
+        padding: 10px;
+        text-align: center;
+        white-space: nowrap; /* Prevents wrapping in small screens */
+      }
+
+      tr:nth-child(even) {
+        background-color: #f5f5f5;
+      }
+
+      /* FILTER SECTION */
+      .filter-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        gap: 10px;
+        flex-wrap: wrap; /* Responsive */
+      }
+
+      .filter-section input,
+      .filter-section select {
+        padding: 7px 10px;
+        outline: none;
+      }
+
+      /* MEDIA QUERIES FOR SMALL DEVICES */
+      @media (max-width: 600px) {
+        .header-bottom ul {
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        header {
+          padding: 20px;
+        }
+
+        .form-container {
+          width: 95%;
+          padding: 20px;
+        }
+
+        table {
+          font-size: 14px;
+        }
+
+        td,
+        th {
+          padding: 6px;
+        }
+
+        .filter-section {
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .filter-section input,
+        .filter-section select {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-top">
+        <h1>Expense Tracker</h1>
+      </div>
+      {% if request.user.is_authenticated %}
+      <div class="header-bottom">
+        <ul>
+          <li><a href="{% url 'add-category' %}">Add Category</a></li>
+          <li><a href="{% url 'add-expense' %}">Add Expense</a></li>
+          <li><a href="{% url 'expense-list' %}">All Expenses</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+      </div>
+      {% endif %}
+    </header>
+    {% block content %}
+    <main>
+      <h2>
+        Welcome to Expense Tracker.One way place to track all your expenses
+      </h2>
+    </main>
+    {% endblock %}
+  </body>
+</html>
