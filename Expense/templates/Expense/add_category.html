@@ -1,0 +1,37 @@
+{% extends "base.html" %} 
+{% block title %} Add Category {% endblock %}
+{% block content %}
+<main>
+  <h1>Add Category</h1>
+  <div class="category-form">
+    <form method="post">
+      {% csrf_token %}
+      <input
+        type="text"
+        placeholder="Category Name"
+        name="name"
+        class="category-field"
+        required
+      />
+      <button type="submit" class="btn add-btn">Add</button>
+    </form>
+  </div>
+  {% if categories %}
+  <h2 class="heading">Categories List</h2>
+  <table border="1" class="category-table">
+    <tr>
+      <th>SNo</th>
+      <th>Category</th>
+    </tr>
+    {% for category in categories %}
+    <tr>
+      <td>{{forloop.counter}}</td>
+      <td>{{category}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>{{message}}</p>
+  {% endif %}
+</main>
+{% endblock %}

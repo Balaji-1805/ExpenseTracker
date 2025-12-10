@@ -1,0 +1,66 @@
+{% extends 'base.html' %} 
+{% block title %} Expenses {% endblock %}
+{%block content %}
+<h2 class="heading">All Expenses</h2>
+
+<form method="POST">
+  {% csrf_token %}
+
+  <div class="filter-section">
+    <label for="category">Filter by Category:</label>
+    <select
+      name="category"
+      id="category"
+      style="padding: 8px; margin-left: 10px"
+    >
+      <option value="all">All</option>
+      {% for cat in categories %}
+      <option value="{{ cat.id }}">{{ cat.name }}</option>
+      {% endfor %}
+    </select>
+    <label for="from_date">From:</label>
+    <input type="date" name="from_date" id="from_date" />
+    <label for="to_date">To:</label>
+    <input type="date" name="to_date" id="to_date" />
+    <button
+      type="submit"
+      class="btn filter-btn"
+      style="width: auto; padding: 8px 12px; margin-left: 10px"
+    >
+      Filter
+    </button>
+  </div>
+</form>
+<div class="expense-list">
+  {% if expenses %}
+  <table border="1">
+    <tr>
+      <th>SNo</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Category</th>
+      <th>Amount</th>
+      <th>Date</th>
+    </tr>
+    {% for exp in expenses %}
+    <tr>
+      <td>{{forloop.counter}}</td>
+      <td>{{exp.title}}</td>
+      <td>{{exp.description}}</td>
+      <td>{{exp.category}}</td>
+      <td>{{exp.amount}}</td>
+      <td>{{ exp.date|date:"F j, Y" }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <td colspan="6" style="text-align: right; font-weight: bold">
+        Total Spent:{{total_amount}}
+      </td>
+    </tr>
+  </table>
+  {% else %}
+  <p>No expenses found</p>
+  {% endif %}
+</div>
+
+{% endblock %}

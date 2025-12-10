@@ -1,0 +1,47 @@
+{% extends 'base.html' %} 
+{% block title %}Login{% endblock %} 
+{% block content %}
+
+<div class="form-container">
+  <h2>Login</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="id_username">Username</label>
+      <input
+        type="text"
+        name="username"
+        id="id_username"
+        autocomplete="off"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="id_password">Password</label>
+      <input
+        type="password"
+        name="password"
+        id="id_password"
+        autocomplete="off"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn-submit">Login</button>
+
+    <p style="margin-top: 15px; font-size: 14px">
+      Don’t have an account?
+      <a href="{% url 'signup' %}">Create one here</a>
+    </p>
+  </form>
+  {% if errors %}
+  <div style="color: red; margin-top: 10px">
+    <p>{{ errors }}</p>
+  {% endif %}
+  </div>
+</div>
+
+{% endblock %}
