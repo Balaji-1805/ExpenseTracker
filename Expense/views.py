@@ -6,20 +6,24 @@ from django.contrib.auth import authenticate, login as auth_login,logout as auth
 
 
 def login(request):
-    errors=""
+    errors = ""
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
 
         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
+        if user:
             auth_login(request, user)
-            return redirect('home')  # or dashboard
+            return redirect('home')
         else:
-            errors="Invalid username or password"
+            errors = "Invalid username or password"
 
-    return render(request, 'login.html',{'errors':errors})
+    # If already logged in & visiting /login
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    return render(request, 'login.html', {'errors': errors})
 
 def logout(request):
     if request.user:
@@ -42,10 +46,9 @@ def signup(request):
 
 
 def home(request):
-    if request.user.is_authenticated:
-        return render(request,'base.html')
-    else:
+    if not request.user.is_authenticated:
         return redirect('login')
+    return render(request, 'base.html')
 
 # add category view
 def add_category(request):
@@ -121,3 +124,7 @@ def delete_expense(request, id):
 
     expense.delete()
     return redirect('expense-list')
+
+
+def custom_404(request, exception):
+    return render(request, 'Expense/404.html', status=404)
